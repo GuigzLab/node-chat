@@ -1,4 +1,4 @@
-# node-chat
+# NodeJs Chat App using web sockets
 A simple chat application made from NodeJs and socket.io.
 This application is based on the socket.io [introduction guide](https://socket.io/get-started/chat/) but has some additional features such as:
 
