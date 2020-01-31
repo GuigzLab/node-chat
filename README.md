@@ -10,9 +10,9 @@ This application is based on the socket.io [introduction guide](https://socket.i
 * The ability to write private messages with the `/whisper` command.
 
 ## To do list
-* Broadcast a message to connected users when someone connects or disconnects ✅
-* Add support for nicknames.
-* Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter. ✅
-* Add “{user} is typing” functionality.
-* Show who’s online.
-* Add private messaging.
+[x] Broadcast a message to connected users when someone connects or disconnects.
+[ ] Add support for nicknames.
+[x] Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
+[ ] Add “{user} is typing” functionality.
+[ ] Show who’s online.
+[ ] Add private messaging.
