@@ -9,6 +9,10 @@ This application is based on the socket.io [introduction guide](https://socket.i
 * A list of connected people.
 * The ability to write private messages with the `/whisper` command.
 
+`node server.js` to run once downloaded.
+
+
+
 ## To do list
 - [x] Broadcast a message to connected users when someone connects or disconnects.
 - [ ] Add support for nicknames.
