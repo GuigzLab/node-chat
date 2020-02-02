@@ -9,7 +9,7 @@ $(function () {
      }
 
      function generateName() {
-          var name1 = ["abandoned", "able", "absolute", "adorable", "adventurous", "academic",
+          let name1 = ["abandoned", "able", "absolute", "adorable", "adventurous", "academic",
                "acceptable", "acclaimed", "accomplished", "accurate", "aching", "acidic",
                "acrobatic", "active", "actual", "adept", "admirable", "admired", "adolescent",
                "adorable", "adored", "advanced", "afraid", "affectionate", "aged",
@@ -20,7 +20,7 @@ $(function () {
                "antique", "anxious", "any", "apprehensive", "appropriate", "apt", "arctic",
                "arid", "aromatic", "artistic", "ashamed", "assured", "astonishing", "athletic",
                "attached", "attentive", "attractive", "austere", "authentic", "authorized",
-               "automatic", "avaricious", "average", "aware", "awesome", "awful", "awkward",
+               "automatic", "aleticious", "average", "aware", "awesome", "awful", "awkward",
                "babyish", "bad", "back", "baggy", "bare", "barren", "basic", "beautiful",
                "belated", "beloved", "beneficial", "better", "best", "bewitched", "big",
                "big-hearted", "biodegradable", "bite-sized", "bitter", "black",
@@ -192,7 +192,7 @@ $(function () {
                "unusual", "unwelcome", "unwieldy", "unwilling", "unwitting", "unwritten",
                "upbeat", "upright", "upset", "urban", "usable", "used", "useful", "useless",
                "utilized", "utter", "vacant", "vague", "vain", "valid", "valuable", "vapid",
-               "variable", "vast", "velvety", "venerated", "vengeful", "verifiable", "vibrant",
+               "letiable", "vast", "velvety", "venerated", "vengeful", "verifiable", "vibrant",
                "vicious", "victorious", "vigilant", "vigorous", "villainous", "violet",
                "violent", "virtual", "virtuous", "visible", "vital", "vivacious", "vivid",
                "voluminous", "wan", "warlike", "warm", "warmhearted", "warped", "wary",
@@ -209,7 +209,7 @@ $(function () {
                "zany", "zealous", "zesty", "zigzag", "rocky"
           ];
 
-          var name2 = ["people", "history", "way", "art", "world", "information", "map", "family",
+          let name2 = ["people", "history", "way", "art", "world", "information", "map", "family",
                "government", "health", "system", "computer", "meat", "year", "thanks", "music",
                "person", "reading", "method", "data", "food", "understanding", "theory", "law",
                "bird", "literature", "problem", "software", "control", "knowledge", "power",
@@ -217,7 +217,7 @@ $(function () {
                "nature", "fact", "product", "idea", "temperature", "investment", "area",
                "society", "activity", "story", "industry", "media", "thing", "oven",
                "community", "definition", "safety", "quality", "development", "language",
-               "management", "player", "variety", "video", "week", "security", "country",
+               "management", "player", "letiety", "video", "week", "security", "country",
                "exam", "movie", "organization", "equipment", "physics", "analysis", "policy",
                "series", "thought", "basis", "boyfriend", "direction", "strategy",
                "technology", "army", "camera", "freedom", "paper", "environment", "child",
@@ -250,7 +250,7 @@ $(function () {
                "region", "republic", "seat", "tradition", "virus", "actor", "classroom",
                "delivery", "device", "difficulty", "drama", "election", "engine", "football",
                "guidance", "hotel", "match", "owner", "priority", "protection", "suggestion",
-               "tension", "variation", "anxiety", "atmosphere", "awareness", "bread",
+               "tension", "letiation", "anxiety", "atmosphere", "awareness", "bread",
                "climate", "comparison", "confusion", "construction", "elevator", "emotion",
                "employee", "employer", "guest", "height", "leadership", "mall", "manager",
                "operation", "recording", "respect", "sample", "transportation", "boring",
@@ -409,25 +409,37 @@ $(function () {
                "temporary", "tomorrow", "wake", "wrap", "yesterday", "Thomas", "Tom", "Lieuwe"
           ];
 
-          var name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[
+          let name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[
                getRandomInt(0, name2.length + 1)]);
           return name;
 
      }
 
      var name = generateName()
-     var socket = io()
+
+
+     let socket = io()
+     let socketConnection = socket.connect();
+     socketConnection.on('connect', function () {
+          const sessionID = socketConnection.id; //
+          let data = {
+               userName: name,
+               userId: sessionID
+          };
+          socket.emit('new user', data)
+     });
+
      $('form').submit(function (e) {
-          msg = name + " : " + $('#m').val()
+          msg = name + " : " + $('.message__form input').val()
           e.preventDefault()
           if ($.trim(msg).length !== 0) {
                socket.emit('chat message', $.trim(msg))
-               $('#messages').append($('<li>').text(msg))
-               $('#m').val('')
+               $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
+               $('.message__form input').val('')
                return false
           }
      })
      socket.on('chat message', function (msg) {
-          $('#messages').append($('<li>').text(msg))
+          $('.message__list').append($('<li class="message__item message__item-received">').text(msg))
      })
 })
