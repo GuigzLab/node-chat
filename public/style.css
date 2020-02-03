@@ -60,6 +60,7 @@ body {
 
 .message__item{
      display: block;
+     width: fit-content;
      max-width: 60%;
      padding: 12px;
      overflow-wrap: break-word;

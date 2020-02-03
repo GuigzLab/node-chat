@@ -430,11 +430,13 @@ $(function () {
      });
 
      $('form').submit(function (e) {
-          msg = name + " : " + $('.message__form input').val()
           e.preventDefault()
+          msg = $('.message__form input').val()
           if ($.trim(msg).length !== 0) {
+               msg = name + " : " + $('.message__form input').val()
                socket.emit('chat message', $.trim(msg))
                $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
+               console.log($.trim(msg).length)
                $('.message__form input').val('')
                return false
           }

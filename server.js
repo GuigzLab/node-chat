@@ -1,9 +1,14 @@
 const express = require("express")
 const app = express()
-const server = require('http').createServer(app)
-const io = require('socket.io')(server)
+const PORT = 3000
+// const server = require('http').createServer(app)
+const server = app.listen(PORT, () => {
+     console.log(`Listening on localhost:${PORT}`)
+})
+// const io = require('socket.io')(server)
+const io = require('socket.io').listen(server)
 
-app.use(express.static("public"))
+app.use('/chat',express.static("public"))
 
 let users = {}
 
@@ -22,7 +27,3 @@ io.on('connection', function (socket) {
 
 
 })
-
-server.listen(3000, function () {
-     console.log('Listening on 127.0.0.1:3000')
-});
