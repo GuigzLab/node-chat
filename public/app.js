@@ -418,14 +418,15 @@ $(function () {
      var name = generateName()
 
 
-     let socket = io()
-     let socketConnection = socket.connect();
-     socketConnection.on('connect', function () {
-          const sessionID = socketConnection.id; //
+     let socket = io('/');
+    
+     socket.on('connect', function () {
+          const sessionID = socket.id; //
           let data = {
                userName: name,
                userId: sessionID
           };
+          console.log(data)
           socket.emit('new user', data)
      });
 
@@ -436,7 +437,6 @@ $(function () {
                msg = name + " : " + $('.message__form input').val()
                socket.emit('chat message', $.trim(msg))
                $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
-               console.log($.trim(msg).length)
                $('.message__form input').val('')
                return false
           }
