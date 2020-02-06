@@ -417,6 +417,7 @@ $(function () {
 
      var name = generateName()
 
+     $('.users .users__self').append(name)
 
      let socket = io('/');
     
@@ -438,10 +439,26 @@ $(function () {
                socket.emit('chat message', $.trim(msg))
                $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
                $('.message__form input').val('')
-               return false
+               $('.message__area').animate({
+                    scrollTop: $('.message__area ul').innerHeight()
+               }, 300)
+               return false   
           }
      })
      socket.on('chat message', function (msg) {
           $('.message__list').append($('<li class="message__item message__item-received">').text(msg))
+          $('.message__area').animate({
+               scrollTop: $('.message__area ul').innerHeight()
+          })
+     })
+
+     socket.on('users list', function (list) {
+          $('.users .users__list').empty()
+          for(index in list){
+               if (name !== list[index].userName){
+                    $('.users .users__list').append($('<li class="users__item">').text(list[index].userName))
+               }
+          }
+          
      })
 })

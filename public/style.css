@@ -16,23 +16,40 @@ body {
 
 :root {
      --primary-color: #007aff;
+     --primary-soft-color: #7dbcff;
+     --soft-green: #00b900;
      --secondary-color: #e0e9f3;
      --background-color: white;
-     --border: 1px solid #b8b8b8; 
+     --border: 1px solid #b8b8b8;
      --form-height: 5em;
+     --header-height: 4em;
 }
 
+header {
+     height: var(--header-height);
+     width: 100vw;
+     background-color: var(--secondary-color);
+     border-bottom: var(--border);
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+}
+
+header .header__title {
+     margin: 0;
+}
+
+/* https://grid.layoutit.com/?id=uAyKv0z */
+
 .grid-container {
-     height: 100%;
-     display: grid;
      grid-template-columns: 1fr;
      grid-template-rows: 1fr;
      grid-template-areas: "message";
-     /* https://grid.layoutit.com/?id=uAyKv0z */
+     position: relative;
 }
 
-.list {
-     grid-area: list;
+.users {
      display: none;
 }
 
@@ -42,23 +59,23 @@ body {
      grid-template-rows: 1fr var(--form-height);
      grid-template-areas: "message__area""message__form";
      grid-area: message;
+     height: calc(100vh - var(--header-height));
 }
 
 .message__area {
      grid-area: message__area;
-     height: calc(100vh - var(--form-height));
      overflow: scroll;
      padding: 8px;
 }
 
-.message__area ul{
+.message__area ul {
      list-style-type: none;
      padding-inline-start: 0;
      display: flex;
      flex-direction: column;
 }
 
-.message__item{
+.message__item {
      display: block;
      width: fit-content;
      max-width: 60%;
@@ -82,7 +99,7 @@ body {
 .message__form {
      grid-area: message__form;
      border-top: var(--border);
-     
+
 }
 
 .message__form form {
@@ -99,7 +116,7 @@ body {
      border: none;
      border-radius: 50px;
      height: 40px;
-     width: 80%;
+     width: calc(100% - 60px);
      padding: 8px;
      outline: none;
      padding-left: 16px;
@@ -112,4 +129,62 @@ body {
      color: white;
      height: 40px;
      width: 40px;
+}
+
+@media screen and (min-width: 960px) {
+     .grid-container {
+          display: grid;
+          grid-template-columns: 300px 1fr;
+          grid-template-rows: 1fr;
+          grid-template-areas: "users message";
+     }
+
+     .users {
+          grid-area: users;
+          width: 100%;
+          display: block;
+          border-right: var(--border);
+          /* padding: 16px; */
+     }
+
+     .message {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr 4em;
+          grid-template-areas: "message__area""message__form";
+          grid-area: message;
+     }
+
+     .users .users__title {
+          text-align: center;
+          font-size: 1.8rem;
+     }
+
+     .users .users__list{
+          list-style-type: none;
+          padding-inline-start: 0;
+          display: flex;
+          flex-direction: column;
+          margin-top: 0;
+     }
+
+     .users .users__self {
+          background-color: var(--soft-green);
+          padding: 12px;
+          border-radius: 50px 0 0 50px;
+          margin: 4px 0 4px 24px;
+          color: white;
+          font-weight: bold;
+     }
+
+     .users .users__list .users__item {
+          background-color: var(--primary-soft-color);
+          padding: 12px;
+          display: inline-block;
+          border-radius: 50px 0 0 50px;
+          margin: 4px 0 4px 24px;
+          color: white;
+     }
+
+
 }
