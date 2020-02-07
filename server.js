@@ -19,14 +19,17 @@ io.on('connection', function (socket) {
                return item.userId
           }).indexOf(socket.id)
           // Broadcast the message to other sockets
-          socket.broadcast.emit('chat message', `${users[userIndex].userName} disconnected`)
+          socket.broadcast.emit('chat info', `${users[userIndex].userName} disconnected`)
           // Remove it from the list
           users.splice(userIndex, 1)
 
           io.emit('users list', users)
      })
-     socket.on('chat message', function (msg) {
-          socket.broadcast.emit('chat message', msg)
+     socket.on('chat message', function (msg, name) {
+          socket.broadcast.emit('chat message', msg, name)
+     });
+     socket.on('private message', function (socketID, msg, name) {
+          socket.broadcast.to(socketID).emit('private message', msg, name)
      });
      socket.on('new user', function (data) {
           /**
@@ -39,7 +42,7 @@ io.on('connection', function (socket) {
           users.push(user)
 
           // Broadcast the message to other sockets
-          socket.broadcast.emit('chat message', `${user.userName} connected`)
+          socket.broadcast.emit('chat info', `${user.userName} connected`)
 
           io.emit('users list', users)
      })

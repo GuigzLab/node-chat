@@ -8,6 +8,7 @@ This application is based on the socket.io [introduction guide](https://socket.i
 * Viewing users who are typing.
 * A list of connected people.
 * The ability to write private messages with the `/whisper` command.
+* The possibility to retrieve your previous messages with arrow keys.
 
 `node server.js` to run once downloaded - or you can visit [this online version](http://chat.guillaumedufau.fr)
 
@@ -16,5 +17,6 @@ This application is based on the socket.io [introduction guide](https://socket.i
 - [ ] Add support for nicknames.
 - [x] Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
 - [ ] Add “{user} is typing” functionality.
-- [ ] Show who’s online.
+- [x] Show who’s online.
 - [ ] Add private messaging.
+- [ ] Add a message history with arrow keys.

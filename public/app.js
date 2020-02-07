@@ -415,12 +415,12 @@ $(function () {
 
      }
 
-     var name = generateName()
+     let name = generateName()
 
      $('.users .users__self').append(name)
 
      let socket = io('/');
-    
+
      socket.on('connect', function () {
           const sessionID = socket.id; //
           let data = {
@@ -431,34 +431,71 @@ $(function () {
           socket.emit('new user', data)
      });
 
-     $('form').submit(function (e) {
+     $('form').submit((e) => {
           e.preventDefault()
-          msg = $('.message__form input').val()
-          if ($.trim(msg).length !== 0) {
-               msg = name + " : " + $('.message__form input').val()
-               socket.emit('chat message', $.trim(msg))
-               $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
-               $('.message__form input').val('')
-               $('.message__area').animate({
-                    scrollTop: $('.message__area ul').innerHeight()
-               }, 300)
-               return false   
+
+          msg = $.trim($('.message__form input').val())
+
+          // Trim test
+          if (msg.length !== 0) {
+               // Commands test
+               msgArray = msg.split(' ')
+               if (msgArray.length > 2 && msgArray[0] === '/msg') {
+                    socketID = msgArray[1]
+                    msgArray.splice(0, 2)
+                    msg = msgArray.join(' ')
+
+                    socket.emit('private message', socketID, msg, name)
+
+                    // Reset the message input
+                    $('.message__form input').val('')
+
+               } else {
+                    // msg = name + " : " + msg
+
+                    // Emit the message
+                    socket.emit('chat message', msg, name)
+
+                    // Insert the message as the sender
+                    $('.message__list').append($('<li class="message__item message__item-sent">').text(msg))
+
+                    // Reset the message input
+                    $('.message__form input').val('')
+
+                    // Scroll the message area
+                    scroll()
+               }
+
           }
      })
-     socket.on('chat message', function (msg) {
-          $('.message__list').append($('<li class="message__item message__item-received">').text(msg))
-          $('.message__area').animate({
-               scrollTop: $('.message__area ul').innerHeight()
-          })
+     socket.on('chat message', (msg, name) => {
+          $('.message__list').append($(`<li class="message__item message__item-received" data-sender="${name}">`).text(msg))
+          scroll()
      })
 
-     socket.on('users list', function (list) {
+     socket.on('chat info', (msg) => {
+          $('.message__list').append($(`<li class="message__info">`).text(msg))
+          scroll()
+     })
+
+     socket.on('private message', (msg, name) => {
+          $('.message__list').append($(`<li class="message__item message__item-private-received" data-sender="${name}">`).text(msg))
+          scroll()
+     })
+
+     socket.on('users list', (list) => {
           $('.users .users__list').empty()
-          for(index in list){
-               if (name !== list[index].userName){
-                    $('.users .users__list').append($('<li class="users__item">').text(list[index].userName))
+          for (index in list) {
+               if (name !== list[index].userName) {
+                    $('.users .users__list').append($(`<li class="users__item">`).text(list[index].userName))
                }
           }
-          
+
      })
+
+     const scroll = () => {
+          $('.message__area').animate({
+               scrollTop: $('.message__area ul').innerHeight()
+          }, 50)
+     }
 })
